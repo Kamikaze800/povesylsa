@@ -6,25 +6,29 @@ from aiogram.types import Message
 
 from app.objects import HANGMAN_PICS
 from app.utils import drawHangman
+from run import bot
 
 router = Router()
 
 @router.message(CommandStart())
-async def main(message: Message):
+async def main(message: Message(message_id)):
     await drawHangman(missedLetters, correctLetters, secretWord, message)
-    await message.answer('букву дай')
+    # await message.answer('букву дай')
+    # await bot.send_message('sosi')
+    await message.answer()
+
 
 
 CATEGORY = 'Animals'
 # WORDS = 'ANT BABOON BADGER BAT BEAR BEAVER CAMEL CAT CLAM COBRA COUGAR COYOTE CROW DEER DOG DONKEY DUCK EAGLE FERRET FOX FROG GOAT GOOSE HAWK LION LIZARD LLAMA MOLE MONKEY MOOSE MOUSE MULE NEWT OTTER OWL PANDA PARROT PIGEON PYTHON RABBIT RAM RAT RAVEN RHINO SALMON SEAL SHARK SHEEP SKUNK SLOTH SNAKE SPIDER STORK SWAN TIGER TOAD TROUT TURKEY TURTLE WEASEL WHALE WOLF WOMBAT ZEBRA'.split()
-WORDS = 'ANT BABOON'.split()
+WORDS = 'ХУЙ ГОВНО МУРАВЕЙ'.split()
 missedLetters = []  # List of incorrect letter guesses.
 correctLetters = []  # List of correct letter guesses.
 secretWord = random.choice(WORDS)  # The word the player must guess.
 alreadyGuessed = []
 
 @router.message()
-async def game(message: Message):
+async def game(message: Message()):
 
     if len(message.text) != 1:
         await message.answer('одну букву')
@@ -36,6 +40,7 @@ async def game(message: Message):
     guess = message.text.upper()
     if guess in alreadyGuessed:
         await message.answer('Эта была, дай другую')
+
         return
     else:
         alreadyGuessed += guess
